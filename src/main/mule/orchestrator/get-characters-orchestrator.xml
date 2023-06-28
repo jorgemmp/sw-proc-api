@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="get-characters-orchestratorSub_Flow" doc:id="4ffa12cc-7f3f-45b2-9345-db3a8bbc8c15" >
+		<logger level="INFO" doc:name="Logger" doc:id="26a358ac-4858-418a-bc37-a965ba849d30" message="#['Get Characters Orchestrator - CorrelationId: ' ++ vars.correlationId]"/>
+		<flow-ref doc:name="get-characters-clientSub_Flow" doc:id="84ab9625-4fc2-4cf9-b8d0-879bbedc0106" name="get-characters-clientSub_Flow" />
+		<ee:transform doc:name="Prepare Payload" doc:id="1afb85de-2393-4b27-a3fd-47966f1c50c1" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/csv
+---
+if ( vars.gender == "" ) payload.results map ((item, index) -> 
+    {
+	"name": item.name,
+	"height": item.height,
+	"mass": item.mass,
+	"hair_color": item.hair_color,
+	"skin_color": item.skin_color,
+	"eye_color": item.eye_color,
+	"birth_year": item.birth_year,
+	"gender": item.gender
+}
+ )
+    else
+    (payload.results map ((item, index) -> 
+    {
+	"name": item.name,
+	"height": item.height,
+	"mass": item.mass,
+	"hair_color": item.hair_color,
+	"skin_color": item.skin_color,
+	"eye_color": item.eye_color,
+	"birth_year": item.birth_year,
+	"gender": item.gender
+}
+ )) filter ((item, index) -> item.gender == vars.gender )]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+</mule>

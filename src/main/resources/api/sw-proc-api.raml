@@ -1,0 +1,25 @@
+#%RAML 1.0
+baseUri: http://localhost:8081/api/proc/
+title: sw-proc-api
+description: Api to retrive all the caracters of Star Wars.
+version: 1.0.0
+documentation:
+ - title: Guide
+   content: |
+     Star Wars Characters Documentation. This service allow request the basic information for
+     all characters of the Star Wars saga, in addition you can request the information flitered
+     by gender (Male or Female) if you requires in this way in csv format.
+     
+uses:
+  library: library-traits.raml
+
+/characters:
+  get:
+    displayName: Get characters
+    description: Retrive characters of Star Wars saga.
+    is: [library.paramsHeaders, library.queryParams, library.errorHandleable]
+    responses:
+      200:
+        body:
+          application/csv:
+            example: !include examples/ex-characters-response.csv

@@ -1,0 +1,10 @@
+http:
+  port: '8081'
+ 
+general:
+  path: '/api/proc/*'
+  
+system:
+  host: 'http://localhost'
+  port: '8080'
+  path: '/api/sys/characters'
